@@ -1,0 +1,6 @@
+mysql_open_port_ranges:
+  # These IPs are for Looker Studio
+  - { range: '142.251.74.0/23', ip_version: 'ipv4' }
+  - { range: '74.125.0.0/16', ip_version: 'ipv4' }
+  - { range: '2001:4860:4807::/48', ip_version: 'ipv6' }
+

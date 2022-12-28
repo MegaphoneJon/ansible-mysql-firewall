@@ -1,0 +1,35 @@
+---
+- name: Set fireall to deny incoming
+  set_fact:
+    mysql_firewall_opening: absent
+
+- name: Set firewall to allow incoming
+  set_fact:
+    mysql_firewall_opening: present
+  when: incoming_mysql == '1'
+
+- name: Open/close port 3306 incoming
+  iptables:
+    chain: INPUT
+    destination_port: '3306'
+    protocol: tcp
+    jump: ACCEPT
+    state: "{{ mysql_firewall_opening }}"
+    ip_version: "{{ item.ip_version }}"
+    source: "{{ item.range }}"
+  with_items: "{{ mysql_open_port_ranges }}"
+  notify: save iptables
+
+- name: Open/close port 3306 outgoing
+  iptables:
+    chain: OUTPUT
+    ctstate: ESTABLISHED
+    source_port: 3306
+    protocol: tcp
+    jump: ACCEPT
+    state: "{{ mysql_firewall_opening }}"
+    ip_version: "{{ item }}"
+  with_items:
+    - ipv4
+    - ipv6
+  notify: save iptables
