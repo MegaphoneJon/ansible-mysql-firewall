@@ -1,5 +1,5 @@
 ---
-- name: Set fireall to deny incoming
+- name: Set firewall to deny incoming
   set_fact:
     mysql_firewall_opening: absent
 
