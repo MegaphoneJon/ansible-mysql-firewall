@@ -6,7 +6,7 @@
 - name: Set firewall to allow incoming
   set_fact:
     mysql_firewall_opening: present
-  when: incoming_mysql == '1'
+  when: incoming_mysql is defined and incoming_mysql == '1'
 
 - name: Open/close port 3306 incoming
   iptables:
